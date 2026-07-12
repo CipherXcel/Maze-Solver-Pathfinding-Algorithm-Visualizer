@@ -1,0 +1,771 @@
+/* ========================================================
+   NavBar — Ultra-Interactive with Flowing Buttons
+   ======================================================== */
+
+/* ---- Main navbar ---- */
+.ms-navbar {
+    background: rgba(7, 11, 23, 0.96);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border-bottom: 1px solid transparent;
+    background-clip: padding-box;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    flex-wrap: wrap;
+    /* Animated gradient border on bottom */
+    box-shadow:
+        0 1px 0 rgba(99,179,237,0.15),
+        0 4px 40px rgba(0,0,0,0.7),
+        0 0 80px rgba(99,179,237,0.04);
+}
+
+/* Flowing neon line on bottom of navbar */
+.ms-navbar::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(99,179,237,0.6) 20%,
+        rgba(167,139,250,0.8) 40%,
+        rgba(246,135,179,0.6) 60%,
+        rgba(251,191,36,0.5) 80%,
+        transparent 100%);
+    background-size: 200% 100%;
+    animation: navBorderFlow 4s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes navBorderFlow {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ---- Brand ---- */
+.ms-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    color: white;
+    margin-right: 8px;
+    flex-shrink: 0;
+    transition: transform 0.3s var(--spring, cubic-bezier(0.34,1.56,0.64,1));
+}
+
+.ms-brand:hover {
+    transform: scale(1.04);
+}
+
+.ms-brand-icon {
+    width: 28px;
+    height: 28px;
+    color: #63b3ed;
+    filter: drop-shadow(0 0 6px rgba(99,179,237,0.6));
+    animation: iconPulse 3s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes iconPulse {
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(99,179,237,0.5)); }
+    50%       { filter: drop-shadow(0 0 14px rgba(99,179,237,0.9)); }
+}
+
+.ms-brand-text {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg,
+        #63b3ed 0%,
+        #a78bfa 25%,
+        #f687b3 50%,
+        #fbbf24 75%,
+        #63b3ed 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: brandShift 5s linear infinite;
+    white-space: nowrap;
+}
+
+@keyframes brandShift {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+/* ---- Controls row ---- */
+.ms-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex: 1;
+    padding: 7px 0;
+}
+
+/* ========================================================
+   BUTTONS — Flowing Liquid Animations
+   ======================================================== */
+
+.ms-btn {
+    padding: 8px 15px;
+    border-radius: var(--radius-sm, 8px);
+    border: 1px solid transparent;
+    font-family: var(--font-main, 'Inter', sans-serif);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    line-height: 1;
+    user-select: none;
+    /* GPU compositing */
+    transform: translateZ(0);
+    will-change: transform;
+    /* Transitions */
+    transition:
+        transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.3s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.ms-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ---- LIQUID FILL — fills from bottom on hover ---- */
+.ms-btn::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    transform: translateY(100%) scaleY(1.2);
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: -2;
+    border-radius: inherit;
+    /* Default: light ripple; overridden per-button */
+    background: rgba(99,179,237,0.12);
+}
+
+.ms-btn:hover:not(:disabled)::before {
+    transform: translateY(0) scaleY(1);
+}
+
+/* ---- SHINE SWEEP — diagonal light that sweeps across on hover ---- */
+.ms-btn::after {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -130%;
+    width: 70%;
+    height: 220%;
+    background: linear-gradient(
+        110deg,
+        transparent 20%,
+        rgba(255,255,255,0.22) 50%,
+        transparent 80%
+    );
+    transform: skewX(-18deg);
+    z-index: 1;
+    pointer-events: none;
+    /* Starts hidden; transitions in on hover */
+    transition: left 0s;
+}
+
+.ms-btn:hover:not(:disabled)::after {
+    left: 160%;
+    transition: left 0.55s ease;
+}
+
+/* Hover: lift + directional glow */
+.ms-btn:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.03);
+}
+
+/* Press: snap down */
+.ms-btn:active:not(:disabled) {
+    transform: translateY(1px) scale(0.97);
+    transition-duration: 0.07s;
+}
+
+/* ========================================================
+   Ghost Button (Dropdown Triggers)
+   ======================================================== */
+
+.ms-btn-ghost {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.78);
+    border-color: rgba(255,255,255,0.1);
+}
+
+.ms-btn-ghost::before {
+    background: rgba(99,179,237,0.12);
+}
+
+.ms-btn-ghost:hover:not(:disabled) {
+    color: #fff;
+    border-color: rgba(99,179,237,0.5);
+    box-shadow:
+        0 0 0 1px rgba(99,179,237,0.3),
+        0 0 16px rgba(99,179,237,0.2),
+        0 4px 12px rgba(0,0,0,0.35);
+}
+
+.ms-btn-ghost.selected {
+    background: rgba(99,179,237,0.12);
+    border-color: rgba(99,179,237,0.5);
+    color: #93c5fd;
+    box-shadow: 0 0 10px rgba(99,179,237,0.15);
+}
+
+/* ========================================================
+   RUN Button — The Star of the Show
+   ======================================================== */
+
+.ms-btn-run {
+    background: linear-gradient(135deg, #3b82f6 0%, #7c3aed 50%, #3b82f6 100%);
+    background-size: 200% 100%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13.5px;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 9px;
+    animation: runGradientShift 3s ease infinite;
+    box-shadow:
+        0 2px 16px rgba(59,130,246,0.4),
+        0 0 0 1px rgba(124,58,237,0.3);
+    z-index: 1;
+}
+
+@keyframes runGradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Spinning rainbow border effect on run button */
+.ms-btn-run-border {
+    position: relative;
+    border-radius: 11px;
+    padding: 2px;
+    display: inline-block;
+    z-index: 0;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ms-btn-run-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 12px;
+    background: conic-gradient(
+        from 0deg,
+        #3b82f6   0deg,
+        #8b5cf6  60deg,
+        #f687b3 120deg,
+        #fbbf24 180deg,
+        #3b82f6 240deg,
+        #8b5cf6 300deg,
+        #3b82f6 360deg
+    );
+    animation: spinBorder 2.8s linear infinite;
+    z-index: -1;
+    filter: blur(1px);
+    opacity: 0.9;
+}
+
+.ms-btn-run-border::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: 10px;
+    background: rgba(7, 11, 23, 0.5);
+    z-index: -1;
+}
+
+@keyframes spinBorder {
+    from { transform: rotate(0deg);   }
+    to   { transform: rotate(360deg); }
+}
+
+.ms-btn-run-border:hover {
+    transform: translateY(-2px) scale(1.03);
+    filter: brightness(1.1);
+}
+
+.ms-btn-run-border:hover::before {
+    filter: blur(2px);
+    animation-duration: 1.8s;
+}
+
+/* Liquid fill for run button */
+.ms-btn-run::before {
+    background: rgba(255,255,255,0.18);
+}
+
+.ms-btn-run:hover:not(:disabled) {
+    box-shadow:
+        0 0 24px rgba(59,130,246,0.65),
+        0 0 48px rgba(124,58,237,0.35),
+        0 6px 20px rgba(0,0,0,0.5);
+}
+
+/* Running state */
+.ms-btn-run.running {
+    background: linear-gradient(135deg, #065f46, #0d9488, #065f46);
+    background-size: 200% 100%;
+    animation: runningPulse 1.4s ease-in-out infinite;
+    box-shadow: 0 2px 16px rgba(13,148,136,0.5), 0 0 0 1px rgba(13,148,136,0.4);
+}
+
+@keyframes runningPulse {
+    0%, 100% { box-shadow: 0 2px 16px rgba(13,148,136,0.4), 0 0 0 1px rgba(13,148,136,0.3); }
+    50%       { box-shadow: 0 4px 32px rgba(13,148,136,0.7), 0 0 0 2px rgba(13,148,136,0.5), 0 0 60px rgba(13,148,136,0.2); }
+}
+
+/* Shimmer overlay while running */
+.run-shimmer {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,255,255,0.2) 40%,
+        rgba(255,255,255,0.3) 50%,
+        rgba(255,255,255,0.2) 60%,
+        transparent 100%);
+    animation: shimmerSweep 1.4s linear infinite;
+    z-index: 2;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.ms-btn-run.running .run-shimmer {
+    display: block;
+}
+
+@keyframes shimmerSweep {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(100%); }
+}
+
+/* Done state */
+.ms-btn-run.done {
+    background: linear-gradient(135deg, #166534, #15803d);
+    box-shadow: 0 2px 12px rgba(22,101,52,0.5);
+    animation: none;
+}
+
+/* ========================================================
+   Maze Button — Purple Flowing
+   ======================================================== */
+
+.ms-btn-maze {
+    background: rgba(139,92,246,0.1);
+    color: #c4b5fd;
+    border-color: rgba(139,92,246,0.25);
+}
+
+.ms-btn-maze::before {
+    background: rgba(139,92,246,0.18);
+}
+
+.ms-btn-maze:hover:not(:disabled) {
+    color: #ddd6fe;
+    border-color: rgba(139,92,246,0.55);
+    box-shadow:
+        0 0 0 1px rgba(139,92,246,0.35),
+        0 0 20px rgba(139,92,246,0.25),
+        0 4px 12px rgba(0,0,0,0.35);
+}
+
+/* ========================================================
+   Danger Button — Red Liquid + Shake
+   ======================================================== */
+
+.ms-btn-danger {
+    background: rgba(239,68,68,0.09);
+    color: #fca5a5;
+    border-color: rgba(239,68,68,0.22);
+}
+
+.ms-btn-danger::before {
+    background: rgba(239,68,68,0.2);
+}
+
+.ms-btn-danger:hover:not(:disabled) {
+    color: #fecaca;
+    border-color: rgba(239,68,68,0.5);
+    box-shadow:
+        0 0 0 1px rgba(239,68,68,0.35),
+        0 0 20px rgba(239,68,68,0.2),
+        0 4px 12px rgba(0,0,0,0.35);
+}
+
+/* ========================================================
+   Chevron & Dropdown
+   ======================================================== */
+
+.ms-chevron {
+    font-size: 9px;
+    opacity: 0.55;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+}
+
+.custom-dropdown.open .ms-chevron {
+    transform: rotate(180deg);
+    opacity: 1;
+}
+
+.custom-dropdown {
+    position: relative;
+}
+
+.ms-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    background: rgba(9, 14, 32, 0.99);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1px solid rgba(99,179,237,0.18);
+    border-radius: 14px;
+    padding: 8px;
+    min-width: 235px;
+    z-index: 500;
+    box-shadow:
+        0 24px 64px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 0 40px rgba(99,179,237,0.05);
+    /* Animated open */
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    pointer-events: none;
+    transform-origin: top left;
+    transition:
+        opacity 0.22s ease,
+        transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.custom-dropdown.open .ms-dropdown-menu {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+.ms-dropdown-section {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    padding: 7px 10px 3px;
+}
+
+.ms-dropdown-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+    margin: 5px 4px;
+}
+
+/* Dropdown items with staggered animation */
+.ms-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 11px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.72);
+    font-family: var(--font-main, 'Inter', sans-serif);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 9px;
+    width: 100%;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.15s, background 0.15s;
+}
+
+/* Liquid fill on dropdown items */
+.ms-dropdown-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(99,179,237,0.08);
+    transform: translateX(-110%);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: inherit;
+    z-index: -1;
+}
+
+.ms-dropdown-item:hover::before {
+    transform: translateX(0);
+}
+
+.ms-dropdown-item:hover {
+    color: #fff;
+}
+
+.ms-dropdown-item:active {
+    transform: scale(0.97);
+}
+
+/* Staggered slide-in when dropdown opens */
+.custom-dropdown.open .ms-dropdown-item {
+    animation: itemSlideIn 0.3s ease both;
+}
+
+.custom-dropdown.open .ms-dropdown-item:nth-child(1) { animation-delay: 0.03s; }
+.custom-dropdown.open .ms-dropdown-item:nth-child(2) { animation-delay: 0.06s; }
+.custom-dropdown.open .ms-dropdown-item:nth-child(3) { animation-delay: 0.09s; }
+.custom-dropdown.open .ms-dropdown-item:nth-child(4) { animation-delay: 0.12s; }
+.custom-dropdown.open .ms-dropdown-item:nth-child(5) { animation-delay: 0.15s; }
+.custom-dropdown.open .ms-dropdown-item:nth-child(6) { animation-delay: 0.18s; }
+.custom-dropdown.open .ms-dropdown-item:nth-child(7) { animation-delay: 0.21s; }
+.custom-dropdown.open .ms-dropdown-item:nth-child(8) { animation-delay: 0.24s; }
+
+@keyframes itemSlideIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Algorithm colour dots */
+.item-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: transform 0.2s var(--spring, cubic-bezier(0.34,1.56,0.64,1));
+}
+
+.ms-dropdown-item:hover .item-dot {
+    transform: scale(1.4);
+}
+
+.dot-dijkstra { background: #63b3ed; box-shadow: 0 0 4px #63b3ed; }
+.dot-astar    { background: #fbbf24; box-shadow: 0 0 4px #fbbf24; }
+.dot-greedy   { background: #4ade80; box-shadow: 0 0 4px #4ade80; }
+.dot-bidir    { background: #c084fc; box-shadow: 0 0 4px #c084fc; }
+.dot-bfs      { background: #2dd4bf; box-shadow: 0 0 4px #2dd4bf; }
+.dot-dfs      { background: #f472b6; box-shadow: 0 0 4px #f472b6; }
+.dot-random   { background: #fb923c; box-shadow: 0 0 4px #fb923c; }
+
+.item-tag {
+    margin-left: auto;
+    font-size: 9.5px;
+    color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.06);
+    padding: 2px 7px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+/* ========================================================
+   Speed Slider
+   ======================================================== */
+
+.ms-speed-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 0 6px;
+}
+
+.ms-speed-label {
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 600;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+.ms-speed-slider {
+    width: 88px;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(99,179,237,0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.ms-speed-slider:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.ms-speed-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #63b3ed, #a78bfa);
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(99,179,237,0.6), 0 0 0 2px rgba(99,179,237,0.2);
+    transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+}
+
+.ms-speed-slider:not(:disabled)::-webkit-slider-thumb:hover {
+    transform: scale(1.35);
+    box-shadow: 0 0 16px rgba(99,179,237,0.9), 0 0 0 3px rgba(99,179,237,0.3);
+}
+
+/* ========================================================
+   Loading Dots (while visualizing)
+   ======================================================== */
+
+.ms-loading-dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 0 4px;
+}
+
+.ms-loading-dots span {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent, #63b3ed);
+    animation: dotBounce 1.2s ease-in-out infinite;
+}
+
+.ms-loading-dots span:nth-child(1) { animation-delay: 0s;    background: #63b3ed; }
+.ms-loading-dots span:nth-child(2) { animation-delay: 0.18s; background: #a78bfa; }
+.ms-loading-dots span:nth-child(3) { animation-delay: 0.36s; background: #f687b3; }
+
+@keyframes dotBounce {
+    0%, 60%, 100% { transform: scale(0.9);   opacity: 0.4; }
+    30%            { transform: scale(1.5);   opacity: 1; }
+}
+
+/* ========================================================
+   Stats Bar
+   ======================================================== */
+
+.ms-stats-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0 8px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    flex-wrap: wrap;
+    animation: statsSlideDown 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes statsSlideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.ms-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 4px 13px;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.ms-stat:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.12);
+}
+
+.stat-icon { font-size: 11px; }
+
+.stat-label {
+    color: rgba(255,255,255,0.4);
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.stat-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    animation: statPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes statPop {
+    0%   { transform: scale(0.7); opacity: 0; }
+    70%  { transform: scale(1.15); }
+    100% { transform: scale(1);   opacity: 1; }
+}
+
+.ms-stat-status.found {
+    border-color: rgba(74,222,128,0.35);
+    background: rgba(74,222,128,0.08);
+    animation: statsSlideDown 0.4s cubic-bezier(0.34,1.56,0.64,1), foundGlow 2s ease-in-out infinite;
+}
+
+@keyframes foundGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+    50%       { box-shadow: 0 0 12px rgba(74,222,128,0.3); }
+}
+
+.ms-stat-status.found .stat-label,
+.ms-stat-status.found .stat-icon { color: #4ade80; }
+
+.ms-stat-status.notfound {
+    border-color: rgba(248,113,113,0.35);
+    background: rgba(248,113,113,0.08);
+}
+
+.ms-stat-status.notfound .stat-label,
+.ms-stat-status.notfound .stat-icon { color: #f87171; }
+
+/* ========================================================
+   Responsive
+   ======================================================== */
+
+@media (max-width: 900px) {
+    .ms-navbar { padding: 0 12px; gap: 6px; }
+    .ms-btn    { font-size: 12px; padding: 6px 10px; }
+    .ms-brand-text { font-size: 15px; }
+    .item-tag  { display: none; }
+}
+
+@media (max-width: 650px) {
+    .ms-btn { font-size: 11px; padding: 5px 8px; gap: 4px; }
+    .ms-brand-text { font-size: 13px; }
+    .ms-speed-slider { width: 64px; }
+    .ms-dropdown-menu { min-width: 190px; }
+}
+
+@media (max-width: 480px) {
+    .ms-btn { font-size: 10px; padding: 4px 7px; }
+    .ms-brand-icon { width: 22px; height: 22px; }
+    .ms-stat { font-size: 10px; padding: 3px 9px; }
+    .ms-brand-text { font-size: 12px; }
+}

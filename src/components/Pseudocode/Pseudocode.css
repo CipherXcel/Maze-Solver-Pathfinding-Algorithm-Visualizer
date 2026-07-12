@@ -1,0 +1,193 @@
+/* ========================================================
+   Pseudocode Panel — Animated Dark Code Block
+   ======================================================== */
+
+.pseudocode {
+    margin: 14px 20px 22px;
+    background: rgba(8, 12, 28, 0.92);
+    border: 1px solid rgba(99, 179, 237, 0.12);
+    border-radius: 18px;
+    padding: 22px 28px;
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 12px 48px rgba(0,0,0,0.45),
+        0 0 0 1px rgba(255,255,255,0.03);
+    animation: panelReveal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes panelReveal {
+    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Animated accent bar on left edge */
+.pseudocode::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg,
+        #63b3ed  0%,
+        #a78bfa  35%,
+        #f687b3  65%,
+        #fbbf24  100%);
+    background-size: 100% 200%;
+    animation: accentFlow 3s ease-in-out infinite alternate;
+    border-radius: 0 0 0 18px;
+}
+
+@keyframes accentFlow {
+    0%   { background-position: 0% 0%;   }
+    100% { background-position: 0% 100%; }
+}
+
+/* Subtle scan overlay */
+.pseudocode::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 3px,
+        rgba(99,179,237,0.012) 3px,
+        rgba(99,179,237,0.012) 4px
+    );
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+/* ---- Heading ---- */
+.pseudocode > h4 {
+    margin: 0 0 16px 12px;
+    text-align: left;
+    font-size: 15.5px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    background: linear-gradient(135deg, #63b3ed 0%, #a78bfa 50%, #f687b3 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: headingShift 5s ease infinite;
+}
+
+@keyframes headingShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ---- Description paragraph ---- */
+.pseudocode > p,
+.pseudocode p {
+    margin: 0 0 16px 12px;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 13.5px;
+    line-height: 1.75;
+    padding-left: 14px;
+    border-left: 2px solid rgba(99, 179, 237, 0.3);
+    animation: paragraphFadeIn 0.4s ease 0.1s both;
+}
+
+@keyframes paragraphFadeIn {
+    from { opacity: 0; transform: translateX(-6px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ---- Code block ---- */
+.pseudocode code {
+    display: block;
+}
+
+/* ---- Ordered list ---- */
+.pseudocode ol {
+    margin: 0;
+    padding-left: 28px;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--font-mono, 'Fira Code', monospace);
+    font-size: 13px;
+    line-height: 1.9;
+    list-style: decimal;
+}
+
+/* ---- List items with hover glow ---- */
+.pseudocode li {
+    padding: 3px 10px 3px 4px;
+    border-radius: 7px;
+    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+    cursor: default;
+    position: relative;
+}
+
+.pseudocode li:hover {
+    background: rgba(99, 179, 237, 0.09);
+    color: #fff;
+    transform: translateX(3px);
+}
+
+/* Glow dot on hovered step */
+.pseudocode li:hover::before {
+    content: '›';
+    position: absolute;
+    left: -14px;
+    color: #63b3ed;
+    font-size: 14px;
+    line-height: 1.6;
+    animation: dotPop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dotPop {
+    from { transform: scale(0) translateX(-4px); opacity: 0; }
+    to   { transform: scale(1) translateX(0);    opacity: 1; }
+}
+
+/* Staggered list item entrance */
+.pseudocode ol li { animation: listItemIn 0.35s ease both; }
+.pseudocode ol li:nth-child(1) { animation-delay: 0.05s; }
+.pseudocode ol li:nth-child(2) { animation-delay: 0.10s; }
+.pseudocode ol li:nth-child(3) { animation-delay: 0.15s; }
+.pseudocode ol li:nth-child(4) { animation-delay: 0.20s; }
+.pseudocode ol li:nth-child(5) { animation-delay: 0.25s; }
+.pseudocode ol li:nth-child(6) { animation-delay: 0.30s; }
+.pseudocode ol li:nth-child(7) { animation-delay: 0.35s; }
+
+@keyframes listItemIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Nested lists */
+.pseudocode ol ol {
+    margin-top: 2px;
+    margin-bottom: 3px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.6);
+}
+
+/* ========================================================
+   Responsive
+   ======================================================== */
+
+@media (max-width: 1100px) {
+    .pseudocode { padding: 18px 22px; margin: 12px 16px 18px; }
+    .pseudocode ol { font-size: 12.5px; }
+}
+
+@media (max-width: 700px) {
+    .pseudocode { padding: 14px 16px; margin: 10px 12px 14px; border-radius: 14px; }
+    .pseudocode > h4 { font-size: 14px; margin-left: 8px; }
+    .pseudocode > p  { margin-left: 8px; font-size: 12.5px; }
+    .pseudocode ol   { font-size: 12px; padding-left: 22px; }
+}
+
+@media (max-width: 480px) {
+    .pseudocode { padding: 12px 12px; margin: 8px 8px 12px; }
+    .pseudocode > h4 { font-size: 13px; margin-left: 6px; }
+    .pseudocode ol   { font-size: 11px; }
+}
