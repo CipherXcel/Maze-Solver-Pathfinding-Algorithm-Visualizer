@@ -1,7 +1,7 @@
 {
   "name": "maze-solver",
   "version": "0.1.0",
-  "homepage": "https://NMPoole.github.io/MazeSolver",
+  "homepage": "https://Cipherxcel.github.io/Maze-Solver-Pathfinding-Algorithm-Visualizer",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.5.2",
