@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Maze-Solver-Pathfinding-Algorithm-Visualizer/static/css/main.67c44f93.css",
+    "main.js": "/Maze-Solver-Pathfinding-Algorithm-Visualizer/static/js/main.eeceb936.js",
+    "index.html": "/Maze-Solver-Pathfinding-Algorithm-Visualizer/index.html",
+    "main.67c44f93.css.map": "/Maze-Solver-Pathfinding-Algorithm-Visualizer/static/css/main.67c44f93.css.map",
+    "main.eeceb936.js.map": "/Maze-Solver-Pathfinding-Algorithm-Visualizer/static/js/main.eeceb936.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.67c44f93.css",
+    "static/js/main.eeceb936.js"
+  ]
+}
