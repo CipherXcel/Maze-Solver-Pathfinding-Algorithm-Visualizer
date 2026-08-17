@@ -26,7 +26,7 @@ generate mazes using different maze generation algorithms:
 
 **Demo Video:**
 
-<img src="https://github.com/CipherXcel/Maze-Solver-Pathfinding-Algorithm-Visualizer/blob/main/overview.gif" alt="Demo Video"/>
+<img src="https://github.com/CipherXcel/Maze-Solver-Pathfinding-Algorithm-Visualizer/blob/main/Demo.gif" alt="Demo Video"/>
 
 **Project Goals:**
 
